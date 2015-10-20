@@ -4,18 +4,149 @@
 	<title>Electric Dreams</title>
 
 	<style type="text/css">
-	/*style the computer text, input, and button*/
+	
 	</style>
 </head>
 <body>
-<h1>Electric Dreams</h1>
-<p id = "computer">Hi, how are you today?</p>
+<h1>Electric Dreams1</h1>
+<p id = "computer">What's the good word buddy, how are you doing?</p>
 <input id = "human" type = "text" placeholder = "Type your response...">
 <button>Enter</button>
 
 <script type="text/javascript">
 //your script here
+//There are three common methods to gain access (control) of markup elements
+//We have used querySelector
+var computer = document.querySelector('#computer');
+//without modifying the markup finish the next 2 var statements	
+var human = document.getElementById('human');
+var button = document.getElementsByTagName('button')[0];
+//other vars we will use in the next step
+var responseNumber;//used to store the value of the response to display to the player
+var newResponse;//used to generate the next response and prevent duplication of responses
+var humanMsg = "";//will hold the text (value) of the player input
+var computerMsg = "";//will hold the computer text displayed to the player each turn
+//new//
+var questionTrack = "start";
+var genericResponses = [
+	"What a goon.",
+	"You smell like cabage.",
+	"I miss your musk."
+	
+	];
 
+human.focus();
+button.addEventListener("click",clickHandler,false);
+function clickHandler(){
+	playGame();
+}
+window.addEventListener("keydown",keydownHandler,false);
+function keydownHandler(event){
+	if (event.keyCode===13) {
+		playGame();
+	}
+}
+function playGame() {
+	
+
+	humanMsg = (human.value).toLowerCase();
+	switch (questionTrack) {
+		case "start":
+		firstAnalysis();
+		break;
+		case "beer":
+		beerAnalysis();
+		break;
+		case "brewery":
+		breweryAnalysis();
+		break;
+		case "sorrows":
+		sorrowsAnalysis();
+		break;
+		case "carnival":
+		carnivalAnalysis();
+		break;
+		default:
+		genericResponse();
+		break;
+	}
+	computer.innerHTML = computerMsg;
+	
+	human.value = "";
+}
+function genericResponse(){
+		
+	if (genericResponses.length >0){
+		newResponse = Math.floor(Math.random()*genericResponses.length);
+		responseNumber = newResponse;
+		computerMsg = genericResponses[responseNumber];
+		genericResponses.splice(responseNumber,1);
+	} else {
+		computerMsg = "You are a knob. I have to go, I think your mom is calling.";
+		human.className="displayNone";
+		button.className="displayNone";
+		setTimeout(endGame,2000);
+	}
+}
+function firstAnalysis(){
+	if (humanMsg.indexOf("good") !== -1){
+		computerMsg = "That is awesome. Do you like craft beer?";
+		questionTrack = "beer";
+	}else if (humanMsg.indexOf("bad") !== -1){
+		computerMsg = "Well that's lame. Would you like me to find a bottle to drown your sorrows?";
+		questionTrack = "sorrows";
+	}else {
+		genericResponse();
+	}
+}
+function beerAnalysis(){
+	if (humanMsg.indexOf("yes") !== -1){
+		computerMsg = "I figured you were a typical hipster. Want to get a Surley?";
+		questionTrack = "Surley";
+	}else if (humanMsg.indexOf("no") !== -1){
+		computerMsg = "Sweet, you are my kind of strange. Want to get a Coors?";
+		questionTrack = "Coors";
+	}else {
+		genericResponse();
+	}
+}
+function breweryAnalysis(){
+	if (humanMsg.indexOf("yes") !== -1){
+		computerMsg = "Alright. Want to go to the local brewery?";
+		questionTrack = "brewery";
+	}else if (humanMsg.indexOf("no") !== -1){
+		computerMsg = "Dang I was hoping you would. Wanna go out for dinner?";
+		questionTrack = "dinner";
+	}else {
+		genericResponse();
+	}
+}
+function sorrowsAnalysis(){
+	if (humanMsg.indexOf("yes") !== -1){
+		computerMsg = "Right on I know of an awesome pizza place. you sure you don't want to get a craft beer. ?";
+		questionTrack = "beer";
+	}else if (humanMsg.indexOf("no") !== -1){
+		computerMsg = "Well I don't know where to go from here. Should we just kick puppies?";
+		questionTrack = "puppies";
+	}else {
+		genericResponse();
+	}
+}
+function CarnivalAnalysis(){
+	if (humanMsg.indexOf("yes") !== -1){
+		computerMsg = "Cool. Should we go drinking at the carnival, and make fun of the freaks, and hit a brewery?";
+		questionTrack = "brewery";
+	}else if (humanMsg.indexOf("no") !== -1){
+		computerMsg = "You're missing out I think it would be fun. Do you want to hit up a local german disco?";
+		questionTrack = "disco";
+	}else {
+		genericResponse();
+	}
+}
+function endGame(){
+	
+	location.assign("https://www.youtube.com/watch?v=YD-1fBWHioA");
+}
 </script>
 </body>
 </html>
